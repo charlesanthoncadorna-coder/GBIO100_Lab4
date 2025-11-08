@@ -1,0 +1,1045 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GBIO 100 - Laboratory Exercise No. 4: Plant Embryogenesis & Seed Development</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2e7d32;
+            --primary-light: #60ad5e;
+            --primary-dark: #005005;
+            --secondary-color: #ffb300;
+            --secondary-light: #ffe54c;
+            --secondary-dark: #c68400;
+            --accent-color: #4a6572;
+            --text-light: #f5f5f5;
+            --text-dark: #212121;
+            --background: #f9f9f9;
+            --card-bg: #ffffff;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+            --correct-color: #4caf50;
+            --incorrect-color: #f44336;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background-color: var(--background);
+            padding-bottom: 2rem;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: var(--text-light);
+            padding: 2rem 1rem;
+            text-align: center;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header-decoration {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 200px;
+            height: 100%;
+            opacity: 0.1;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path fill="white" d="M50,5 C60,5 70,10 75,20 C80,30 85,40 90,50 C95,60 95,70 90,80 C85,90 75,95 65,95 C55,95 45,90 40,80 C35,70 30,60 25,50 C20,40 15,30 10,20 C5,10 15,5 25,5 Z"/></svg>');
+            background-repeat: no-repeat;
+            background-position: center right;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 1rem;
+        }
+
+        .course-info {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+
+        .info-item {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .info-item i {
+            font-size: 1rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .intro {
+            background-color: var(--card-bg);
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .intro h2 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            border-bottom: 2px solid var(--primary-light);
+            padding-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .intro h2 i {
+            color: var(--secondary-color);
+        }
+
+        .phases-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .phase-card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            transition: var(--transition);
+            border-top: 4px solid var(--primary-color);
+        }
+
+        .phase-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .phase-header {
+            background-color: var(--primary-color);
+            color: var(--text-light);
+            padding: 1rem;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .phase-content {
+            padding: 1.5rem;
+        }
+
+        .phase-content h3 {
+            color: var(--primary-dark);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .phase-content h3 i {
+            color: var(--secondary-color);
+        }
+
+        .phase-content ul {
+            padding-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .phase-content li {
+            margin-bottom: 0.5rem;
+        }
+
+        .resource-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background-color: rgba(46, 125, 50, 0.1);
+            color: var(--primary-dark);
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            text-decoration: none;
+            transition: var(--transition);
+            margin: 0.25rem 0;
+            font-weight: 500;
+        }
+
+        .resource-link:hover {
+            background-color: rgba(46, 125, 50, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .time-estimate {
+            display: inline-block;
+            background-color: var(--secondary-light);
+            color: var(--text-dark);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            margin-top: 0.5rem;
+        }
+
+        .stations-container {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .station {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            border-left: 4px solid var(--accent-color);
+        }
+
+        .station-header {
+            background-color: var(--accent-color);
+            color: var(--text-light);
+            padding: 1rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .station-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .station-number {
+            background-color: var(--secondary-color);
+            color: var(--text-dark);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .station-content {
+            padding: 1.5rem;
+        }
+
+        .station-narrative {
+            font-style: italic;
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background-color: rgba(46, 125, 50, 0.05);
+            border-left: 4px solid var(--primary-color);
+            border-radius: 4px;
+        }
+
+        .image-placeholder {
+            background-color: #e0e0e0;
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 1rem 0;
+            border-radius: 4px;
+            color: #757575;
+            font-style: italic;
+            background-image: linear-gradient(45deg, #f0f0f0 25%, transparent 25%, transparent 75%, #f0f0f0 75%, #f0f0f0), 
+                              linear-gradient(45deg, #f0f0f0 25%, transparent 25%, transparent 75%, #f0f0f0 75%, #f0f0f0);
+            background-size: 20px 20px;
+            background-position: 0 0, 10px 10px;
+        }
+
+        .prompt-box {
+            background-color: rgba(255, 179, 0, 0.1);
+            border-left: 4px solid var(--secondary-color);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+
+        .deliverable {
+            background-color: rgba(46, 125, 50, 0.1);
+            border-left: 4px solid var(--primary-color);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+
+        .deliverable h4 {
+            color: var(--primary-dark);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .quiz-container {
+            background-color: var(--card-bg);
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+        }
+
+        .quiz-container h2 {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid var(--primary-light);
+            padding-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .quiz-question {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .quiz-question:last-child {
+            border-bottom: none;
+        }
+
+        .quiz-question h4 {
+            margin-bottom: 0.5rem;
+            color: var(--accent-color);
+        }
+
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .quiz-option {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            border-radius: 4px;
+            transition: var(--transition);
+        }
+
+        .quiz-option:hover {
+            background-color: rgba(0, 0, 0, 0.03);
+        }
+
+        .quiz-option.correct {
+            background-color: rgba(76, 175, 80, 0.1);
+            border-left: 3px solid var(--correct-color);
+        }
+
+        .quiz-option.incorrect {
+            background-color: rgba(244, 67, 54, 0.1);
+            border-left: 3px solid var(--incorrect-color);
+        }
+
+        .quiz-feedback {
+            margin-top: 0.5rem;
+            padding: 0.5rem;
+            border-radius: 4px;
+            display: none;
+        }
+
+        .feedback-correct {
+            background-color: rgba(76, 175, 80, 0.1);
+            border-left: 3px solid var(--correct-color);
+            color: var(--correct-color);
+        }
+
+        .feedback-incorrect {
+            background-color: rgba(244, 67, 54, 0.1);
+            border-left: 3px solid var(--incorrect-color);
+            color: var(--incorrect-color);
+        }
+
+        .quiz-submit {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: var(--transition);
+            margin-top: 1rem;
+        }
+
+        .quiz-submit:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .quiz-results {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            border-radius: 4px;
+            background-color: rgba(46, 125, 50, 0.1);
+            border-left: 4px solid var(--primary-color);
+            display: none;
+        }
+
+        .report-container {
+            background-color: var(--card-bg);
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+        }
+
+        .report-container h2 {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid var(--primary-light);
+            padding-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .report-guidelines {
+            background-color: rgba(74, 101, 114, 0.05);
+            padding: 1.5rem;
+            border-radius: 4px;
+            margin-bottom: 1.5rem;
+        }
+
+        .report-guidelines h3 {
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+        }
+
+        .report-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .report-section h4 {
+            color: var(--primary-dark);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .submission-notice {
+            background-color: rgba(255, 179, 0, 0.1);
+            padding: 1.5rem;
+            border-radius: 4px;
+            margin-top: 1.5rem;
+            border-left: 4px solid var(--secondary-color);
+        }
+
+        .submission-notice h4 {
+            color: var(--secondary-dark);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        footer {
+            text-align: center;
+            padding: 1.5rem;
+            color: var(--text-dark);
+            font-size: 0.9rem;
+            border-top: 1px solid #e0e0e0;
+            margin-top: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .course-info {
+                flex-direction: column;
+                align-items: center;
+                gap: 1rem;
+            }
+            
+            .phases-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .station-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-decoration"></div>
+        <div class="header-content">
+            <h1><i class="fas fa-seedling"></i> Laboratory Exercise No. 4: Plant Embryogenesis & Seed Development</h1>
+            <p class="subtitle">GBIO 100 – Developmental Biology Laboratory</p>
+            <div class="course-info">
+                <div class="info-item"><i class="fas fa-laptop"></i> Mode: Asynchronous</div>
+                <div class="info-item"><i class="fas fa-microscope"></i> Central Concept: From zygote to mature embryo</div>
+                <div class="info-item"><i class="fas fa-bullseye"></i> Overall Goal: Analyze plant embryo development</div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <section class="intro">
+            <h2><i class="fas fa-info-circle"></i> Laboratory Overview</h2>
+            <p>This lab traces the developmental journey from a single-celled zygote to a mature, dormant embryo within a seed, highlighting the establishment of the plant body plan and the differences between monocots and dicots.</p>
+            <p>Through this asynchronous laboratory experience, you will analyze provided micrographs, diagrams, and datasets to understand the stages of plant embryo development, the structure of seeds, and the biological significance of this process.</p>
+        </section>
+
+        <section class="quiz-container">
+            <h2><i class="fas fa-question-circle"></i> Pre-Lab Quiz</h2>
+            <p>Complete this quiz to test your understanding of the pre-lab materials before proceeding to the virtual investigation. After submitting, you'll see the correct answers with explanations.</p>
+            
+            <div class="quiz-question">
+                <h4>1. Which of the following is the correct sequence of plant embryo development?</h4>
+                <div class="quiz-options">
+                    <div class="quiz-option" data-correct="false">
+                        <input type="radio" id="q1a" name="q1" value="a">
+                        <label for="q1a">Zygote → Heart → Globular → Torpedo → Mature</label>
+                    </div>
+                    <div class="quiz-option" data-correct="true">
+                        <input type="radio" id="q1b" name="q1" value="b">
+                        <label for="q1b">Zygote → Globular → Heart → Torpedo → Mature</label>
+                    </div>
+                    <div class="quiz-option" data-correct="false">
+                        <input type="radio" id="q1c" name="q1" value="c">
+                        <label for="q1c">Zygote → Torpedo → Heart → Globular → Mature</label>
+                    </div>
+                    <div class="quiz-option" data-correct="false">
+                        <input type="radio" id="q1d" name="q1" value="d">
+                        <label for="q1d">Zygote → Heart → Torpedo → Globular → Mature</label>
+                    </div>
+                </div>
+                <div class="quiz-feedback" id="feedback-q1">
+                    <p><strong>Correct Answer:</strong> Zygote → Globular → Heart → Torpedo → Mature</p>
+                    <p><strong>Explanation:</strong> Plant embryo development begins with the zygote, which undergoes cell division to form a globular stage. This then develops into the heart stage as cotyledons begin to form, followed by the torpedo stage where the embryo elongates, and finally the mature embryo stage.</p>
+                </div>
+            </div>
+            
+            <div class="quiz-question">
+                <h4>2. What is the primary function of cotyledons in a seed?</h4>
+                <div class="quiz-options">
+                    <div class="quiz-option" data-correct="false">
+                        <input type="radio" id="q2a" name="q2" value="a">
+                        <label for="q2a">Protection of the embryo</label>
+                    </div>
+                    <div class="quiz-option" data-correct="false">
+                        <input type="radio" id="q2b" name="q2" value="b">
+                        <label for="q2b">Absorption of water during germination</label>
+                    </div>
+                    <div class="quiz-option" data-correct="true">
+                        <input type="radio" id="q2c" name="q2" value="c">
+                        <label for="q2c">Storage of nutrients for the embryo</label>
+                    </div>
+                    <div class="quiz-option" data-correct="false">
+                        <input type="radio" id="q2d" name="q2" value="d">
+                        <label for="q2d">Development into the first true leaves</label>
+                    </div>
+                </div>
+                <div class="quiz-feedback" id="feedback-q2">
+                    <p><strong>Correct Answer:</strong> Storage of nutrients for the embryo</p>
+                    <p><strong>Explanation:</strong> Cotyledons, also known as seed leaves, serve as nutrient storage organs in seeds. They provide the necessary energy and building blocks for the embryo during germination until the seedling can photosynthesize on its own.</p>
+                </div>
+            </div>
+            
+            <div class="quiz-question">
+                <h4>3. Which structure protects the shoot apex in monocot embryos?</h4>
+                <div class="quiz-options">
+                    <div class="quiz-option" data-correct="false">
+                        <input type="radio" id="q3a" name="q3" value="a">
+                        <label for="q3a">Coleorhiza</label>
+                    </div>
+                    <div class="quiz-option" data-correct="false">
+                        <input type="radio" id="q3b" name="q3" value="b">
+                        <label for="q3b">Hypocotyl</label>
+                    </div>
+                    <div class="quiz-option" data-correct="false">
+                        <input type="radio" id="q3c" name="q3" value="c">
+                        <label for="q3c">Epicotyl</label>
+                    </div>
+                    <div class="quiz-option" data-correct="true">
+                        <input type="radio" id="q3d" name="q3" value="d">
+                        <label for="q3d">Coleoptile</label>
+                    </div>
+                </div>
+                <div class="quiz-feedback" id="feedback-q3">
+                    <p><strong>Correct Answer:</strong> Coleoptile</p>
+                    <p><strong>Explanation:</strong> The coleoptile is a protective sheath that covers the plumule (shoot apex) in monocot embryos. It helps the shoot push through the soil during germination while protecting the delicate shoot apex.</p>
+                </div>
+            </div>
+            
+            <div class="quiz-question">
+                <h4>4. What is the main difference between albuminous and exalbuminous seeds?</h4>
+                <div class="quiz-options">
+                    <div class="quiz-option" data-correct="true">
+                        <input type="radio" id="q4a" name="q4" value="a">
+                        <label for="q4a">The presence or absence of endosperm at maturity</label>
+                    </div>
+                    <div class="quiz-option" data-correct="false">
+                        <input type="radio" id="q4b" name="q4" value="b">
+                        <label for="q4b">The number of cotyledons present</label>
+                    </div>
+                    <div class="quiz-option" data-correct="false">
+                        <input type="radio" id="q4c" name="q4" value="c">
+                        <label for="q4c">The type of fruit that contains the seed</label>
+                    </div>
+                    <div class="quiz-option" data-correct="false">
+                        <input type="radio" id="q4d" name="q4" value="d">
+                        <label for="q4d">The method of seed dispersal</label>
+                    </div>
+                </div>
+                <div class="quiz-feedback" id="feedback-q4">
+                    <p><strong>Correct Answer:</strong> The presence or absence of endosperm at maturity</p>
+                    <p><strong>Explanation:</strong> Albuminous seeds retain endosperm as a food storage tissue at maturity (e.g., corn, wheat), while exalbuminous seeds have no endosperm at maturity because it's completely consumed during embryo development (e.g., bean, pea).</p>
+                </div>
+            </div>
+            
+            <div class="quiz-question">
+                <h4>5. Which plant hormone plays a crucial role in breaking seed dormancy?</h4>
+                <div class="quiz-options">
+                    <div class="quiz-option" data-correct="false">
+                        <input type="radio" id="q5a" name="q5" value="a">
+                        <label for="q5a">Auxin</label>
+                    </div>
+                    <div class="quiz-option" data-correct="true">
+                        <input type="radio" id="q5b" name="q5" value="b">
+                        <label for="q5b">Gibberellin</label>
+                    </div>
+                    <div class="quiz-option" data-correct="false">
+                        <input type="radio" id="q5c" name="q5" value="c">
+                        <label for="q5c">Ethylene</label>
+                    </div>
+                    <div class="quiz-option" data-correct="false">
+                        <input type="radio" id="q5d" name="q5" value="d">
+                        <label for="q5d">Cytokinin</label>
+                    </div>
+                </div>
+                <div class="quiz-feedback" id="feedback-q5">
+                    <p><strong>Correct Answer:</strong> Gibberellin</p>
+                    <p><strong>Explanation:</strong> Gibberellins are plant hormones that stimulate seed germination by promoting the synthesis of hydrolytic enzymes that break down stored food reserves in the seed, enabling the embryo to grow.</p>
+                </div>
+            </div>
+            
+            <button class="quiz-submit" id="submit-quiz">Submit Quiz</button>
+            
+            <div class="quiz-results" id="quiz-results">
+                <h3><i class="fas fa-chart-line"></i> Quiz Results</h3>
+                <p id="score-display"></p>
+                <p>Review the feedback for each question to understand the correct answers and explanations.</p>
+            </div>
+        </section>
+
+        <h2><i class="fas fa-tasks"></i> Laboratory Phases</h2>
+        <div class="phases-container">
+            <div class="phase-card">
+                <div class="phase-header">
+                    <h3><i class="fas fa-book-open"></i> Phase 1: Pre-Lab Preparation</h3>
+                </div>
+                <div class="phase-content">
+                    <h4><i class="fas fa-check-circle"></i> Task / Activity</h4>
+                    <p>Review core concepts and complete pre-lab quiz.</p>
+                    
+                    <h4><i class="fas fa-file-alt"></i> Resources Provided</h4>
+                    <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1rem;">
+                        <a href="resources/pre-lab-module.pdf" class="resource-link" target="_blank">
+                            <i class="fas fa-file-pdf"></i> Interactive Text Module
+                        </a>
+                        <a href="resources/annotated-diagrams.pdf" class="resource-link" target="_blank">
+                            <i class="fas fa-file-pdf"></i> Annotated Diagrams
+                        </a>
+                        <a href="resources/terminology-list.pdf" class="resource-link" target="_blank">
+                            <i class="fas fa-file-pdf"></i> Key Terminology List
+                        </a>
+                    </div>
+                    
+                    <h4><i class="fas fa-clipboard-check"></i> Deliverable</h4>
+                    <p>Online Quiz: 5-10 auto-graded questions</p>
+                    
+                    <h4><i class="fas fa-bullseye"></i> Learning Objective</h4>
+                    <p>To activate prior knowledge and establish foundational concepts.</p>
+                    
+                    <div class="time-estimate"><i class="fas fa-clock"></i> Time: 45-60 min</div>
+                </div>
+            </div>
+
+            <div class="phase-card">
+                <div class="phase-header">
+                    <h3><i class="fas fa-search"></i> Phase 2: Virtual Investigation</h3>
+                </div>
+                <div class="phase-content">
+                    <h4><i class="fas fa-check-circle"></i> Task / Activity</h4>
+                    <p>Analyze provided data from four core activities.</p>
+                    
+                    <h4><i class="fas fa-map-marker-alt"></i> Stations</h4>
+                    <ul>
+                        <li>Embryo Development Series</li>
+                        <li>Monocot vs. Dicot Comparison</li>
+                        <li>Seed Dissection & Anatomy</li>
+                        <li>Seed Germination Analysis</li>
+                    </ul>
+                    
+                    <h4><i class="fas fa-clipboard-check"></i> Deliverable</h4>
+                    <p>Lab Notebook Entries for each station</p>
+                    
+                    <h4><i class="fas fa-bullseye"></i> Learning Objective</h4>
+                    <p>To develop observational and analytical skills.</p>
+                    
+                    <div class="time-estimate"><i class="fas fa-clock"></i> Time: 90-120 min</div>
+                </div>
+            </div>
+
+            <div class="phase-card">
+                <div class="phase-header">
+                    <h3><i class="fas fa-file-contract"></i> Phase 3: Post-Lab Synthesis</h3>
+                </div>
+                <div class="phase-content">
+                    <h4><i class="fas fa-check-circle"></i> Task / Activity</h4>
+                    <p>Synthesize observations into a formal report.</p>
+                    
+                    <h4><i class="fas fa-file-alt"></i> Resources Provided</h4>
+                    <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1rem;">
+                        <a href="resources/imrad-worksheet.pdf" class="resource-link" target="_blank">
+                            <i class="fas fa-file-pdf"></i> Structured Worksheet for IMRaD Report
+                        </a>
+                    </div>
+                    
+                    <h4><i class="fas fa-clipboard-check"></i> Deliverable</h4>
+                    <p>Formal Laboratory Report (IMRaD Format)</p>
+                    
+                    <h4><i class="fas fa-bullseye"></i> Learning Objective</h4>
+                    <p>To demonstrate understanding through scientific communication.</p>
+                    
+                    <div class="time-estimate"><i class="fas fa-clock"></i> Time: 120-150 min</div>
+                </div>
+            </div>
+
+            <div class="phase-card">
+                <div class="phase-header">
+                    <h3><i class="fas fa-brain"></i> Phase 4: Knowledge Check</h3>
+                </div>
+                <div class="phase-content">
+                    <h4><i class="fas fa-check-circle"></i> Task / Activity</h4>
+                    <p>Apply concepts to new scenarios.</p>
+                    
+                    <h4><i class="fas fa-file-alt"></i> Resources Provided</h4>
+                    <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1rem;">
+                        <a href="resources/case-studies.pdf" class="resource-link" target="_blank">
+                            <i class="fas fa-file-pdf"></i> Case Study & Problem Set Document
+                        </a>
+                    </div>
+                    
+                    <h4><i class="fas fa-clipboard-check"></i> Deliverable</h4>
+                    <p>Online Submission (LMS)</p>
+                    
+                    <h4><i class="fas fa-bullseye"></i> Learning Objective</h4>
+                    <p>To apply knowledge to real-world problems.</p>
+                    
+                    <div class="time-estimate"><i class="fas fa-clock"></i> Time: 30-45 min</div>
+                </div>
+            </div>
+        </div>
+
+        <h2><i class="fas fa-flask"></i> Virtual Investigation Stations</h2>
+        <div class="stations-container">
+            <div class="station">
+                <div class="station-header">
+                    <div class="station-title"><i class="fas fa-chart-line"></i> Station 1: Embryo Development Series</div>
+                    <div class="station-number">1</div>
+                </div>
+                <div class="station-content">
+                    <div class="station-narrative">
+                        "A time-course study of Capsella bursa-pastoris (Shepherd's purse) embryo development was conducted."
+                    
+                    <div class="image-container">
+                <img src="images/capsella-embryo-series.jpg" 
+                     alt="Capsella embryo development stages" 
+                     class="station-image" width="600">
+                <div class="image-caption">Figure 1: Capsella bursa-pastoris embryo development sequence</div>
+            </div>
+                    
+                    <div class="prompt-box">
+                        <strong>Prompt:</strong> "Arrange the stages in chronological order and identify the key morphological change at each transition."
+                    </div>
+                    
+                    <div class="deliverable">
+                        <h4><i class="fas fa-clipboard-list"></i> Lab Notebook Entry 1:</h4>
+                        <ul>
+                            <li>A chronological series of 4 labeled biological drawings</li>
+                            <li>A written description of one key event for each developmental transition</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="station">
+        <div class="station-header">
+            <div class="station-title"><i class="fas fa-balance-scale"></i> Station 2: Monocot vs. Dicot Embryo Comparison</div>
+            <div class="station-number">2</div>
+        </div>
+        <div class="station-content">
+            <div class="station-narrative">
+                "Compare the mature embryonic structure of a representative dicot (Phaseolus vulgaris, bean) and a monocot (Zea mays, corn)."
+            </div>
+            
+            <div class="comparison-images">
+                <div class="comparison-item">
+                    <img src="images/bean-embryo.jpg" 
+                         alt="Bean embryo structure" 
+                         class="comparison-image" width="500">
+                    <div class="image-caption">Figure 2A: Phaseolus vulgaris (Bean) embryo</div>
+                </div>
+                <div class="comparison-item">
+                    <img src="images/corn-embryo.jpg" 
+                         alt="Corn embryo structure" 
+                         class="comparison-image" width="350">
+                    <div class="image-caption">Figure 2B: Zea mays (Corn) embryo</div>
+                </div>
+            </div>
+                    
+                    <div class="prompt-box">
+                        <strong>Dataset:</strong> A table with blank fields for structural comparisons.
+                    </div>
+                    
+                    <div class="deliverable">
+                        <h4><i class="fas fa-clipboard-list"></i> Lab Notebook Entry 2:</h4>
+                        <ul>
+                            <li>Completed comparison table (Dicot vs. Monocot)</li>
+                            <li>Labeled drawings of both embryo types</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+         <div class="station">
+        <div class="station-header">
+            <div class="station-title"><i class="fas fa-cut"></i> Station 3: Seed Dissection & Anatomy</div>
+            <div class="station-number">3</div>
+        </div>
+        <div class="station-content">
+            <div class="station-narrative">
+                "Various seeds were dissected to analyze their internal anatomy and nutrient storage strategies."
+            </div>
+            
+            <div class="comparison-images">
+                <div class="comparison-item">
+                    <img src="images/bean-dissection.jpg" 
+                         alt="Bean seed dissection" 
+                         class="comparison-image" width="350">
+                    <div class="image-caption">Figure 3A: Bean seed internal anatomy</div>
+                </div>
+                <div class="comparison-item">
+                    <img src="images/corn-dissection.jpg" 
+                         alt="Corn kernel dissection" 
+                         class="comparison-image" width="350">
+                    <div class="image-caption">Figure 3B: Corn kernel internal anatomy</div>
+                </div>
+            </div>
+            
+            <div class="image-container">
+                <img src="images/starch-test-results.jpg" 
+                     alt="Lugol's iodine test results" 
+                     class="station-image" width="500">
+                <div class="image-caption">Figure 3C: Lugol's iodine test showing starch presence (blue-black color)</div>
+            </div>
+                    
+                    <div class="prompt-box">
+                        <strong>Data:</strong> Results of a Lugol's iodine test on bean cotyledons and corn endosperm.
+                    </div>
+                    
+                    <div class="deliverable">
+                        <h4><i class="fas fa-clipboard-list"></i> Lab Notebook Entry 3:</h4>
+                        <ul>
+                            <li>Labeled drawings of bean seed and corn kernel anatomy</li>
+                            <li>Answers to analysis questions about function and starch test</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="station">
+        <div class="station-header">
+            <div class="station-title"><i class="fas fa-seedling"></i> Station 4: Seed Germination Analysis</div>
+            <div class="station-number">4</div>
+        </div>
+        <div class="station-content">
+            <div class="station-narrative">
+                "The germination process of a bean seed was documented over 7 days."
+            </div>
+            
+            <div class="image-container">
+                <img src="images/germination-timeline.jpg" 
+                     alt="Seed germination time-lapse" 
+                     class="station-image" width="500">
+                <div class="image-caption">Figure 4: Bean seed germination sequence over 7 days</div>
+            </div>
+            
+                    <div class="deliverable">
+                        <h4><i class="fas fa-clipboard-list"></i> Lab Notebook Entry 4:</h4>
+                        <ul>
+                            <li>Flowchart or description of germination stages</li>
+                            <li>Analysis of which structure emerges first and why</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <section class="report-container">
+            <h2><i class="fas fa-file-contract"></i> Post-Lab Report Guidelines</h2>
+            
+            <div class="report-guidelines">
+                <h3><i class="fas fa-clipboard-check"></i> IMRaD Format Requirements</h3>
+                <p>Your formal laboratory report must follow the IMRaD (Introduction, Methods, Results, and Discussion) format. Use the structured worksheet provided to organize your findings from all four stations into a coherent scientific narrative.</p>
+            </div>
+            
+            <div class="report-section">
+                <h4><i class="fas fa-pen-fancy"></i> Introduction</h4>
+                <p>Explain the purpose and importance of plant embryogenesis. Provide background information on the developmental process from zygote to mature embryo.</p>
+            </div>
+            
+            <div class="report-section">
+                <h4><i class="fas fa-vial"></i> Methods</h4>
+                <p>Summarize the "virtual" methods used for each station. Describe how you analyzed the provided micrographs, diagrams, and datasets.</p>
+            </div>
+            
+            <div class="report-section">
+                <h4><i class="fas fa-chart-bar"></i> Results</h4>
+                <p>Present your findings from all four stations. Include descriptions, references to your analyses, and any relevant observations. Use clear headings for each station's results.</p>
+            </div>
+            
+            <div class="report-section">
+                <h4><i class="fas fa-comments"></i> Discussion</h4>
+                <p>Interpret your results and explain how embryogenesis establishes the plant body plan and ensures species survival. Connect your findings to broader biological concepts.</p>
+            </div>
+            
+            <div class="submission-notice">
+                <h4><i class="fas fa-clipboard-check"></i> Report Submission</h4>
+                <p><strong>Please submit a printed hard copy of your completed laboratory report during our next face-to-face class session.</strong>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p>Developed by CAE Cadorna &copy; 2025</p>
+        <p>GBIO 100 - Developmental Biology Laboratory</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const submitButton = document.getElementById('submit-quiz');
+            const quizResults = document.getElementById('quiz-results');
+            const scoreDisplay = document.getElementById('score-display');
+            
+            submitButton.addEventListener('click', function() {
+                let score = 0;
+                const totalQuestions = 5;
+                
+                // Process each question
+                for (let i = 1; i <= totalQuestions; i++) {
+                    const questionName = 'q' + i;
+                    const selectedOption = document.querySelector(`input[name="${questionName}"]:checked`);
+                    const feedbackElement = document.getElementById(`feedback-q${i}`);
+                    
+                    if (selectedOption) {
+                        const isCorrect = selectedOption.parentElement.getAttribute('data-correct') === 'true';
+                        
+                        // Highlight correct/incorrect answers
+                        const options = document.querySelectorAll(`input[name="${questionName}"]`);
+                        options.forEach(option => {
+                            const parent = option.parentElement;
+                            if (parent.getAttribute('data-correct') === 'true') {
+                                parent.classList.add('correct');
+                            } else if (option.checked && parent.getAttribute('data-correct') === 'false') {
+                                parent.classList.add('incorrect');
+                            }
+                        });
+                        
+                        // Show feedback
+                        if (feedbackElement) {
+                            feedbackElement.style.display = 'block';
+                            feedbackElement.className = isCorrect ? 
+                                'quiz-feedback feedback-correct' : 
+                                'quiz-feedback feedback-incorrect';
+                        }
+                        
+                        if (isCorrect) {
+                            score++;
+                        }
+                    } else {
+                        // If no answer selected, show correct answer
+                        const options = document.querySelectorAll(`input[name="${questionName}"]`);
+                        options.forEach(option => {
+                            const parent = option.parentElement;
+                            if (parent.getAttribute('data-correct') === 'true') {
+                                parent.classList.add('correct');
+                            }
+                        });
+                        
+                        const feedbackElement = document.getElementById(`feedback-q${i}`);
+                        if (feedbackElement) {
+                            feedbackElement.style.display = 'block';
+                            feedbackElement.className = 'quiz-feedback feedback-incorrect';
+                        }
+                    }
+                }
+                
+                // Display results
+                scoreDisplay.textContent = `You scored ${score} out of ${totalQuestions} (${Math.round(score/totalQuestions*100)}%)`;
+                quizResults.style.display = 'block';
+                
+                // Scroll to results
+                quizResults.scrollIntoView({ behavior: 'smooth' });
+                
+                // Disable submit button
+                submitButton.disabled = true;
+                submitButton.textContent = 'Quiz Submitted';
+            });
+        });
+    </script>
+</body>
+</html>
